@@ -20,13 +20,3 @@ services:
      - PMA_ARBITRARY=1
      - MYSQL_ROOT_PASSWORD=root
 
-  php:
-    image: php
-    volumes:
-      - ./public_html/:/var/www/html/
-  httpd:
-    image: httpd
-    ports:
-      - "8081:80"
-    volumes:
-      - ./public_html/:/var/www/html/
