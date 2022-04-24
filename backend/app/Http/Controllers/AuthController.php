@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -71,11 +71,13 @@ class AuthController extends Controller
         $user = $request->user();
 
         $tokenResult = $user->createToken('Personal Access Token');
-        $token = $tokenResult->token;
-        
+          
+        $token = $tokenResult->accessToken;
+
         if ($request->remember_me)
             $token->expires_at = Carbon::now()->addWeeks(1);
         $token->save();
+
         return response()->json([
             'success' => true,
             'id' => $user->id,
@@ -84,7 +86,7 @@ class AuthController extends Controller
             'access_token' => $tokenResult->accessToken,
             'token_type' => 'Bearer',
             'expires_at' => Carbon::parse(
-                $tokenResult->token->expires_at
+                $tokenResult->accessToken->expires_at
             )->toDateTimeString()
         ], 201);
     }
