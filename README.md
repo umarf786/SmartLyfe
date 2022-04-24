@@ -7,3 +7,4 @@ Start of the video is users perspective, end of vid is admins perspective
 Sign up works as it should but I did not display it in the video
 Upon login it will check the role of the user and direct them to the correct place
 I have also disabled the use of adding to cart for admins so that only works for an account with a role of user
+Oh and the legacy folder just contains the old code that I used before the redesign
