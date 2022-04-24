@@ -1,22 +1,29 @@
-version: '3.1'
+version: "3"
 services:
-  db:
-    image: arm64v8/mysql:oracle
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: test
+
+  backend:
+    image: bitnami/laravel:9
+    container_name: "backend"
     ports:
-      - "3307:3306"
+      - "8000:8000"
+    env_file:
+      - ./backend/.env
     volumes:
-      - $HOME/Downloads/phpmyadmin.sql:/phpmyadmin.sql
+      - ./backend:/app
+    depends_on:
+      - db
 
-  phpmyadmin:
-    image: phpmyadmin
-    restart: always
+  db:
+    image: mysql:5.6
     ports:
-      - 8080:80
+      - "3306:3306"
     environment:
-     - PMA_ARBITRARY=1
-     - MYSQL_ROOT_PASSWORD=root
+      MYSQL_ROOT_PASSWORD: smartlyfe
+      MYSQL_USER: smartlyfe
+      MYSQL_PASSWORD: smartlyfe
+      MYSQL_DATABASE: smartlyfe
+    volumes:
+      - smartlyfe-db:/var/lib/mysql
 
+volumes:
+  smartlyfe-db:
