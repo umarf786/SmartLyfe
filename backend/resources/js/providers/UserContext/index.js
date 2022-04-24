@@ -26,6 +26,8 @@ function UserContextProvider({children}) {
         const user = { email: username, password }
         const response = await authService.login(user);
 
+        console.log(response);
+        
         if (user) {
           setUserData(user);
         }

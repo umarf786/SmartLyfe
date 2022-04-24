@@ -5604,7 +5604,7 @@ function Header() {
 
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
     className: "header",
-    children: userData ? 'Logged In ' : 'not logged in'
+    children: userData
   });
 }
 
@@ -5696,12 +5696,13 @@ function UserContextProvider(_ref) {
 
             case 3:
               response = _context.sent;
+              console.log(response);
 
               if (user) {
                 setUserData(user);
               }
 
-            case 5:
+            case 6:
             case "end":
               return _context.stop();
           }

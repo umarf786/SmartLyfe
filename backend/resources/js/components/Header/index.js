@@ -8,7 +8,7 @@ function Header() {
 
     return (
         <div className="header"> 
-            { userData ? 'Logged In ' : 'not logged in' }
+            { userData }
         </div>
     );
 }
