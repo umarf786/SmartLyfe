@@ -91,7 +91,7 @@ CREATE TABLE `test` (
 
 LOCK TABLES `test` WRITE;
 /*!40000 ALTER TABLE `test` DISABLE KEYS */;
-INSERT INTO `test` VALUES (19,'admin@whatever.com','Umar','walle786','admin'),(26,'user@gmail.com','User 1','website123','user'),(27,'user2@gmail.com','User 2','website123','user'),(37,'ali@fat.com','Ali Fat','walle786','admin'),(38,'ibby11@bradford.com','Ibrahim Nasir','walle786','user');
+INSERT INTO `test` VALUES (19,'admin@whatever.com','Umar','adminpass','admin'),(26,'user@gmail.com','User 1','website123','user'),(27,'user2@gmail.com','User 2','website123','user'),(37,'ali@fat.com','Ali Fat','davidpass','admin'),(38,'ibby11@bradford.com','Ibrahim Nasir','randpass','user');
 /*!40000 ALTER TABLE `test` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
