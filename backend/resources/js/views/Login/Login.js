@@ -1,27 +1,39 @@
 // Return a 404 react component
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import { UserContext } from '../../providers/UserContext';
 
 const Login = () => {
     const [formSubmitting, setFormSubmitting] = useState(false);
-    const { userData, logIn, logOut } = useContext(UserContext);
+    const [formErrorMessage, setFormErrorMessage] = useState();
+    const { userData, loginError, logIn, logOut } = useContext(UserContext);
 
-    const handleSubmit = (e) => {
+    const handleLogin = (e) => {
       e.preventDefault();
       setFormSubmitting(true);
-      console.log('submitted');
-      console.log(logIn(e.target.email.value, e.target.password.value));
-      
+      setFormErrorMessage();
+      const attempt = logIn(e.target.email.value, e.target.password.value);
+      console.log("aaaa:", attempt)
+      if (attempt.error) {
+        setFormErrorMessage(attempt.error);
+      }
+      setFormSubmitting(false);
     }
+
+    useEffect(() => {
+      setFormErrorMessage(loginError);
+    }, [loginError])
+    
 
     return (
       <div className="container">
       <div className="row">
         <div className="offset-xl-3 col-xl-6 offset-lg-1 col-lg-10 col-md-12 col-sm-12 col-12 ">
           <h2 className="text-center mb30">Log In To Your Account</h2>
-          <form onSubmit={handleSubmit}>
+
+          { formErrorMessage && <h2>{formErrorMessage}</h2>}
+          <form onSubmit={handleLogin}>
             <div className="form-group">
               <input id="email" type="email" name="email" placeholder="E-mail" className="form-control" required/>
             </div>

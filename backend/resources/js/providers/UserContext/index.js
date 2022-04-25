@@ -12,6 +12,7 @@ function UserContextProvider({children}) {
 
     const [userData, setUserData] = useState(savedUserData)
     const [isLoggedIn, setIsLoggedIn] = useState(savedIsLoggedIn);
+    const [loginError, setLoginError] = useState();
      
     
     useEffect(() => {
@@ -24,21 +25,31 @@ function UserContextProvider({children}) {
     
     const logIn = async (username, password) => {
         const user = { email: username, password }
-        const response = await authService.login(user);
-
-        console.log(response);
-        
-        if (user) {
-          setUserData(user);
+        try {
+            const response = await authService.login(user);
+            
+            setUserData(response.data);
+            setIsLoggedIn(true)
+            setLoginError()
+        } catch (error) {
+            setUserData({});
+            setIsLoggedIn(false)
+            setLoginError(error.message)
         }
     }
 
     const logOut = () => {
-      setUserData('');
+      setUserData({});
+      setIsLoggedIn(false)
+    }
+
+    const getUser = async () => {
+        const response = await authService.user(userData.plain_token);
+        console.log(response)
     }
     
     return (
-        <UserContext.Provider value={{ userData, isLoggedIn, logIn, logOut }}>
+        <UserContext.Provider value={{ userData, isLoggedIn, loginError, getUser, setUserData, setIsLoggedIn, logIn, logOut }}>
             {children}
         </UserContext.Provider>
     )

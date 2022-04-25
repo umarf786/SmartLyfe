@@ -4,6 +4,9 @@ import Home from "./views/Home/Home";
 
 import { UserContextProvider } from './providers/UserContext';
 
+import Header from './components/Header';
+import Footer from './components/Footer';
+
 import Login from "./views/Login/Login";
 // import Register from "./views/Register/Register";
 import NotFound from "./views/NotFound/NotFound";
@@ -14,19 +17,18 @@ import NotFound from "./views/NotFound/NotFound";
 
 const Main = () => (
   <UserContextProvider>
+    <Header />
     <Router>
       <Routes>
-          {/*User might LogIn*/}
           <Route exact path="/" element={<Home />} />
-          {/*User will LogIn*/}
           <Route path="/login" element={<Login />} />
           {/* <Route path="/register" element={<Register />} /> */}
           {/* User is LoggedIn*/}
           {/* <PrivateRoute path="/dashboard" element={<Dashboard />} /> */}
-          {/*Page Not Found*/}
-          <Route element={<NotFound />} />
+          <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
+    <Footer />
   </UserContextProvider>
 );
 

@@ -4,7 +4,8 @@ import Main from './Router';
 
 class Root extends Component {
   render() {
-      return (<Main />);
+      return (
+      <Main />);
   }
 }
 
