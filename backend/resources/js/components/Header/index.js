@@ -3,12 +3,11 @@ import React, { useContext } from 'react';
 import { UserContext } from "../../providers/UserContext";
 
 function Header() {
-    const { userData, isLoggedIn, logOut, getUser } = useContext(UserContext);
+    const { userData, isLoggedIn, logOut } = useContext(UserContext);
 
     const handleLogout = (e) => {
         e.preventDefault();
-        getUser();
-        // logOut();
+        logOut();
     }
 
     return (
@@ -41,7 +40,7 @@ function Header() {
                         { isLoggedIn && (
                             <li className="nav-item dropdown">
                                 <a id="navbarDropdown" className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                                    {userData.name}
+                                    {userData?.name}
                                 </a>
 
                                 <div className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">

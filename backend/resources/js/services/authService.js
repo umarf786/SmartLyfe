@@ -10,7 +10,16 @@ const user = (accessToken) => {
   })
 }
 
+const logout = (accessToken) => {
+  return axios.get("/api/auth/user", {
+    headers: {
+      Authorization: `Bearer ${accessToken}`
+    }
+  })
+}
+
 export default {
   login,
+  logout,
   user,
 }

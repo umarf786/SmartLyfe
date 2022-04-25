@@ -7,9 +7,10 @@ use App\Models\Cart;
  
 class CartController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return Cart::all();
+        $cart = Cart::where('email', $request->user()->email)->first();
+        return $cart;
     }
 
     public function show(Cart $cart)

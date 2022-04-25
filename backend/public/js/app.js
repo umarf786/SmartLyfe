@@ -5609,12 +5609,11 @@ function Header() {
   var _useContext = (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(_providers_UserContext__WEBPACK_IMPORTED_MODULE_1__.UserContext),
       userData = _useContext.userData,
       isLoggedIn = _useContext.isLoggedIn,
-      logOut = _useContext.logOut,
-      getUser = _useContext.getUser;
+      logOut = _useContext.logOut;
 
   var handleLogout = function handleLogout(e) {
     e.preventDefault();
-    getUser(); // logOut();
+    logOut();
   };
 
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("nav", {
@@ -5667,7 +5666,7 @@ function Header() {
               href: "#",
               role: "button",
               "data-bs-toggle": "dropdown",
-              children: userData.name
+              children: userData === null || userData === void 0 ? void 0 : userData.name
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
               className: "dropdown-menu dropdown-menu-end",
               "aria-labelledby": "navbarDropdown",
@@ -5737,35 +5736,34 @@ var UserContext = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_1__.createConte
 function UserContextProvider(_ref) {
   var children = _ref.children;
 
-  var savedUserData = function savedUserData() {
-    return JSON.parse(window.localStorage.getItem('userData')) || {};
+  var savedAccessToken = function savedAccessToken() {
+    return JSON.parse(window.localStorage.getItem('access_token')) || null;
   };
 
-  var savedIsLoggedIn = function savedIsLoggedIn() {
-    return JSON.parse(window.localStorage.getItem('isLoggedIn')) || false;
-  };
-
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(savedUserData),
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(savedAccessToken),
       _useState2 = _slicedToArray(_useState, 2),
-      userData = _useState2[0],
-      setUserData = _useState2[1];
+      accessToken = _useState2[0],
+      setAccessToken = _useState2[1];
 
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(savedIsLoggedIn),
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)({}),
       _useState4 = _slicedToArray(_useState3, 2),
-      isLoggedIn = _useState4[0],
-      setIsLoggedIn = _useState4[1];
+      userData = _useState4[0],
+      setUserData = _useState4[1];
 
   var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(),
       _useState6 = _slicedToArray(_useState5, 2),
-      loginError = _useState6[0],
-      setLoginError = _useState6[1];
+      isLoggedIn = _useState6[0],
+      setIsLoggedIn = _useState6[1];
+
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(),
+      _useState8 = _slicedToArray(_useState7, 2),
+      loginError = _useState8[0],
+      setLoginError = _useState8[1];
 
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
-    localStorage.setItem('userData', JSON.stringify(userData));
-  }, [userData]);
-  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
-    localStorage.setItem('isLoggedIn', JSON.stringify(isLoggedIn));
-  }, [isLoggedIn]);
+    localStorage.setItem('access_token', JSON.stringify(accessToken));
+    getUser();
+  }, [accessToken]);
 
   var logIn = /*#__PURE__*/function () {
     var _ref2 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee(username, password) {
@@ -5784,25 +5782,24 @@ function UserContextProvider(_ref) {
 
             case 4:
               response = _context.sent;
-              setUserData(response.data);
-              setIsLoggedIn(true);
-              setLoginError();
-              _context.next = 15;
+              setAccessToken(response.data.access_token);
+              _context.next = 14;
               break;
 
-            case 10:
-              _context.prev = 10;
+            case 8:
+              _context.prev = 8;
               _context.t0 = _context["catch"](1);
               setUserData({});
               setIsLoggedIn(false);
               setLoginError(_context.t0.message);
+              setAccessToken(null);
 
-            case 15:
+            case 14:
             case "end":
               return _context.stop();
           }
         }
-      }, _callee, null, [[1, 10]]);
+      }, _callee, null, [[1, 8]]);
     }));
 
     return function logIn(_x, _x2) {
@@ -5810,26 +5807,21 @@ function UserContextProvider(_ref) {
     };
   }();
 
-  var logOut = function logOut() {
-    setUserData({});
-    setIsLoggedIn(false);
-  };
-
-  var getUser = /*#__PURE__*/function () {
+  var logOut = /*#__PURE__*/function () {
     var _ref3 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
-      var response;
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
         while (1) {
           switch (_context2.prev = _context2.next) {
             case 0:
               _context2.next = 2;
-              return _services_authService__WEBPACK_IMPORTED_MODULE_2__["default"].user(userData.plain_token);
+              return _services_authService__WEBPACK_IMPORTED_MODULE_2__["default"].logout(accessToken);
 
             case 2:
-              response = _context2.sent;
-              console.log(response);
+              setUserData({});
+              setIsLoggedIn(false);
+              setAccessToken();
 
-            case 4:
+            case 5:
             case "end":
               return _context2.stop();
           }
@@ -5837,13 +5829,42 @@ function UserContextProvider(_ref) {
       }, _callee2);
     }));
 
-    return function getUser() {
+    return function logOut() {
       return _ref3.apply(this, arguments);
+    };
+  }();
+
+  var getUser = /*#__PURE__*/function () {
+    var _ref4 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
+      var response;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
+        while (1) {
+          switch (_context3.prev = _context3.next) {
+            case 0:
+              _context3.next = 2;
+              return _services_authService__WEBPACK_IMPORTED_MODULE_2__["default"].user(accessToken);
+
+            case 2:
+              response = _context3.sent;
+              setIsLoggedIn(true);
+              setUserData(response.data);
+
+            case 5:
+            case "end":
+              return _context3.stop();
+          }
+        }
+      }, _callee3);
+    }));
+
+    return function getUser() {
+      return _ref4.apply(this, arguments);
     };
   }();
 
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(UserContext.Provider, {
     value: {
+      accessToken: accessToken,
       userData: userData,
       isLoggedIn: isLoggedIn,
       loginError: loginError,
@@ -5884,8 +5905,17 @@ var user = function user(accessToken) {
   });
 };
 
+var logout = function logout(accessToken) {
+  return axios.get("/api/auth/user", {
+    headers: {
+      Authorization: "Bearer ".concat(accessToken)
+    }
+  });
+};
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   login: login,
+  logout: logout,
   user: user
 });
 

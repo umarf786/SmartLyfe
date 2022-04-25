@@ -6,11 +6,22 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProductController;
 
-Route::get('carts', 'App\Http\Controllers\CartController@index');
-Route::get('carts/{cart}', 'App\Http\Controllers\CartController@show');
-Route::post('carts', 'App\Http\Controllers\CartController@store');
-Route::put('carts/{cart}', 'App\Http\Controllers\CartController@update');
-Route::delete('carts/{cart}', 'App\Http\Controllers\CartController@delete');
+
+Route::group([
+    'prefix' => 'cart'
+], function () {
+    Route::group([
+        'middleware' => 'auth:api'
+    ], function () {
+        Route::get('', 'App\Http\Controllers\CartController@index');
+        Route::get('{cart}', 'App\Http\Controllers\CartController@show');
+        Route::post('', 'App\Http\Controllers\CartController@store');
+        Route::put('{cart}', 'App\Http\Controllers\CartController@update');
+        Route::delete('{cart}', 'App\Http\Controllers\CartController@delete');
+    });
+});
+
+
 
 Route::get('products', 'App\Http\Controllers\ProductController@index');
 Route::get('products/{product}', 'App\Http\Controllers\ProductController@show');
